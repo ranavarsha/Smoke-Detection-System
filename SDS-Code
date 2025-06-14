@@ -1,0 +1,33 @@
+#define MQ2_SENSOR_PIN 34     // Analog pin for MQ-2
+#define LED_PIN 22            // Red LED for alert
+#define BUZZER_PIN 21         // Buzzer
+
+int smokeThreshold = 300;     // Adjust based on calibration
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(MQ2_SENSOR_PIN, INPUT);
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LOW);
+  digitalWrite(BUZZER_PIN, LOW);
+}
+
+void loop() {
+  int sensorValue = analogRead(MQ2_SENSOR_PIN);
+  Serial.print("Smoke Sensor Reading: ");
+  Serial.println(sensorValue);
+
+  if (sensorValue > smokeThreshold) {
+    // Smoke detected
+    digitalWrite(LED_PIN, HIGH);
+    digitalWrite(BUZZER_PIN, HIGH);
+    Serial.println("⚠️ Smoke Detected!");
+  } else {
+    // Normal condition
+    digitalWrite(LED_PIN, LOW);
+    digitalWrite(BUZZER_PIN, LOW);
+  }
+
+  delay(1000); // Delay for 1 second
+}
